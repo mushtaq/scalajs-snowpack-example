@@ -2,6 +2,8 @@
 
 > ✨ Bootstrapped with Create Snowpack App (CSA).
 
+Install `sbtn` first from [here](https://github.com/sbt/sbtn-dist/releases/tag/v1.4.0-M2).
+
 ## Available Scripts
 
 ### npm start
