@@ -1,5 +1,6 @@
 import Libs._
 import org.openqa.selenium.chrome.ChromeOptions
+import org.scalajs.jsenv.Input
 import org.scalajs.jsenv.selenium.SeleniumJSEnv
 import sbt.Keys.artifactPath
 
@@ -45,12 +46,15 @@ lazy val `example` = project
       ScalablyTyped.R.rxjs
     ),
     // SeleniumJSENV does not support ESModules for now
-//    jsEnv in Test := new SeleniumJSEnv(
-//      new ChromeOptions().setHeadless(false),
-//      SeleniumJSEnv.Config().withKeepAlive(true)
-//    ),
+    jsEnv in Test := new SeleniumJSEnv(
+      new ChromeOptions().setHeadless(true),
+      SeleniumJSEnv
+        .Config()
+        .withMaterializeInServer("test", "http://localhost:8080/test/")
+    ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
     // testHtml does not work even with Scala.js 1.2.0 if you import modules
     Test / testHtml / artifactPath := (Test / scalaJSTestHTMLArtifactDirectory).value / "test.html"
+//    Test / jsEnvInput := Seq(Input.ESModule())
   )

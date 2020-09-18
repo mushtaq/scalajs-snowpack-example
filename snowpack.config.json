@@ -1,5 +1,6 @@
 {
   "mount": {
+    "test": "/test",
     "example/target/scala-2.13/example-fastopt-test-html": "/",
     "public": "/",
     "example/target/scala-2.13": "/_dist_",
