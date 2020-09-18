@@ -47,10 +47,12 @@ lazy val `example` = project
     ),
     // SeleniumJSENV does not support ESModules for now
     jsEnv in Test := new SeleniumJSEnv(
-      new ChromeOptions().setHeadless(true),
+      new ChromeOptions()
+        .setHeadless(true),
       SeleniumJSEnv
         .Config()
-        .withMaterializeInServer("test", "http://localhost:8080/test/")
+        .withMaterializeInServer("example/test", "http://localhost:8080/test/")
+//        .withKeepAlive(true)
     ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
