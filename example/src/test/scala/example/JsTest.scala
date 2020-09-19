@@ -8,6 +8,7 @@ class JsTest extends AsyncFreeSpec with Matchers {
   "demo" in {
     Main.printEachAndCollect(50)
     println("**********************")
+    println("**********************")
     1 shouldBe 1
   }
 

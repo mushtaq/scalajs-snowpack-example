@@ -12,7 +12,7 @@ object Main {
   }
 
   def printEachAndCollect(n: Int): Future[Double] = {
-    val observable = rxjs.interval(1000)
+    val observable = rxjs.interval(1000).pipe(ops.take(10))
     observable.subscribe(x => println(x))
     val result     = observable.pipe(ops.take(n), ops.toArray[Double]())
     result.toPromise[Double]().toFuture

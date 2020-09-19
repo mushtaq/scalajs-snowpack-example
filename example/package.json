@@ -2,7 +2,7 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
-    "test": "set -x; cd ..; sbtn example/test; cd -"
+    "test": "set -x; cd ..; sbtn 'project example; startSnowpackTestServer; test; stopSnowpackTestServer'; cd -"
   },
   "dependencies": {
     "rxjs": "^6.6.3"

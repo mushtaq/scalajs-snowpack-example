@@ -43,25 +43,19 @@ lazy val `example` = project
       `scala-async`,
       ScalablyTyped.R.rxjs
     ),
-    jsEnv in Test := new SeleniumJSEnv(
+    jsEnv := new SeleniumJSEnv(
       new ChromeOptions().setHeadless(true),
       new TestConfig(baseDirectory.value).seleniumConfig
     ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
-    Test / test := {
-      val process = Def.task {
-        new TestConfig(baseDirectory.value).startSnowpackTestServer()
-      }.value
-      val _       = (Test / test).value
-      process.destroy()
+    snowpackTestServerProcess := None,
+    startSnowpackTestServer := {
+      new TestConfig(baseDirectory.value).startSnowpackTestServer()
     },
-    Test / testHtml := {
-      val process      = Def.task {
-        new TestConfig(baseDirectory.value).startSnowpackTestServer()
-      }.value
-      val testHtmlFile = (Test / testHtml).value
-      process.destroy()
-      testHtmlFile
-    }
+    stopSnowpackTestServer := snowpackTestServerProcess.value.foreach(_.destroy())
   )
+
+lazy val startSnowpackTestServer   = taskKey[Process]("start snowpack test server")
+lazy val stopSnowpackTestServer    = taskKey[Unit]("stop snowpack test server")
+lazy val snowpackTestServerProcess = taskKey[Option[Process]]("process handle of the test server")
