@@ -45,20 +45,20 @@ lazy val `example` = project
     ),
     jsEnv in Test := new SeleniumJSEnv(
       new ChromeOptions().setHeadless(true),
-      new SnowpackTestConfig(baseDirectory.value).seleniumConfig
+      new TestConfig(baseDirectory.value).seleniumConfig
     ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
     Test / test := {
       val process = Def.task {
-        new SnowpackTestConfig(baseDirectory.value).start()
+        new TestConfig(baseDirectory.value).startSnowpackTestServer()
       }.value
       val _       = (Test / test).value
       process.destroy()
     },
     Test / testHtml := {
       val process      = Def.task {
-        new SnowpackTestConfig(baseDirectory.value).start()
+        new TestConfig(baseDirectory.value).startSnowpackTestServer()
       }.value
       val testHtmlFile = (Test / testHtml).value
       process.destroy()

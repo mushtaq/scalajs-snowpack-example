@@ -4,7 +4,7 @@ import java.nio.file.Files
 
 import org.scalajs.jsenv.selenium.SeleniumJSEnv
 
-class SnowpackTestConfig(baseDir: File) {
+class TestConfig(baseDir: File) {
   private val contentDirName = "test-run"
   private val contentDir     = s"$baseDir/target/$contentDirName"
   private val testPort       = 9091
@@ -24,7 +24,7 @@ class SnowpackTestConfig(baseDir: File) {
        |}
        |""".stripMargin
 
-  def start(): Process = {
+  def startSnowpackTestServer(): Process = {
     val testConfigPath = Files.createTempFile(null, ".json")
     Files.write(testConfigPath, snowpackTestConfig.getBytes())
     testConfigPath.toFile.deleteOnExit()
