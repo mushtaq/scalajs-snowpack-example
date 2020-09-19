@@ -2,7 +2,7 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
-    "test": "echo \"This template does not include a test runner by default.\" && exit 1"
+    "test": "set -x; cd ..; sbtn example/test; cd -"
   },
   "dependencies": {
     "rxjs": "^6.6.3"

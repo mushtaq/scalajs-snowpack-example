@@ -1,8 +1,6 @@
 import Libs._
 import org.openqa.selenium.chrome.ChromeOptions
-import org.scalajs.jsenv.Input
 import org.scalajs.jsenv.selenium.SeleniumJSEnv
-import sbt.Keys.artifactPath
 
 inThisBuild(
   Seq(
@@ -47,16 +45,24 @@ lazy val `example` = project
     ),
     // SeleniumJSENV does not support ESModules for now
     jsEnv in Test := new SeleniumJSEnv(
-      new ChromeOptions()
-        .setHeadless(true),
-      SeleniumJSEnv
-        .Config()
-        .withMaterializeInServer("example/test", "http://localhost:8080/test/")
-//        .withKeepAlive(true)
+      new ChromeOptions().setHeadless(true),
+      new SnowpackTestConfig(baseDirectory.value).seleniumConfig
     ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
-    // testHtml does not work even with Scala.js 1.2.0 if you import modules
-    Test / testHtml / artifactPath := (Test / scalaJSTestHTMLArtifactDirectory).value / "test.html"
-//    Test / jsEnvInput := Seq(Input.ESModule())
+    Test / testHtml := {
+      val process      = Def.task {
+        new SnowpackTestConfig(baseDirectory.value).start()
+      }.value
+      val testHtmlFile = (Test / testHtml).value
+      process.destroy()
+      testHtmlFile
+    },
+    Test / test := {
+      val process = Def.task {
+        new SnowpackTestConfig(baseDirectory.value).start()
+      }.value
+      val _       = (Test / test).value
+      process.destroy()
+    }
   )
