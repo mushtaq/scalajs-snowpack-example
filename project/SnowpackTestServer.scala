@@ -1,14 +1,17 @@
 import java.io.File
 import java.lang.ProcessBuilder.Redirect
 import java.nio.file.Files
+import java.util.concurrent.atomic.AtomicReference
 
 import org.scalajs.jsenv.selenium.SeleniumJSEnv
 
-class TestConfig(baseDir: File) {
+class SnowpackTestServer(baseDir: File) {
   private val contentDirName = "test-run"
   private val contentDir     = s"$baseDir/target/$contentDirName"
   private val testPort       = 9091
   private val webRoot        = s"http://localhost:$testPort/"
+
+  private val process: AtomicReference[Option[Process]] = new AtomicReference(None)
 
   private val snowpackTestConfig: String =
     s"""
@@ -24,7 +27,7 @@ class TestConfig(baseDir: File) {
        |}
        |""".stripMargin
 
-  def startSnowpackTestServer(): Process = {
+  def start(): Unit = {
     val testConfigPath = Files.createTempFile(null, ".json")
     Files.write(testConfigPath, snowpackTestConfig.getBytes())
     testConfigPath.toFile.deleteOnExit()
@@ -33,7 +36,12 @@ class TestConfig(baseDir: File) {
       .directory(baseDir)
       .redirectError(Redirect.INHERIT)
 
-    processBuilder.start()
+    process.set(Some(processBuilder.start()))
+  }
+
+  def stop(): Unit = {
+    val maybeProcess = process.getAndSet(None)
+    maybeProcess.foreach(_.destroy())
   }
 
   def seleniumConfig: SeleniumJSEnv.Config = {

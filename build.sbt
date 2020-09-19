@@ -45,17 +45,15 @@ lazy val `example` = project
     ),
     jsEnv := new SeleniumJSEnv(
       new ChromeOptions().setHeadless(true),
-      new TestConfig(baseDirectory.value).seleniumConfig
+      snowpackTestServer.value.seleniumConfig
     ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
-    snowpackTestServerProcess := None,
-    startSnowpackTestServer := {
-      new TestConfig(baseDirectory.value).startSnowpackTestServer()
-    },
-    stopSnowpackTestServer := snowpackTestServerProcess.value.foreach(_.destroy())
+    snowpackTestServer := new SnowpackTestServer(baseDirectory.value),
+    startSnowpackTestServer := snowpackTestServer.value.start(),
+    stopSnowpackTestServer := snowpackTestServer.value.stop()
   )
 
-lazy val startSnowpackTestServer   = taskKey[Process]("start snowpack test server")
-lazy val stopSnowpackTestServer    = taskKey[Unit]("stop snowpack test server")
-lazy val snowpackTestServerProcess = taskKey[Option[Process]]("process handle of the test server")
+lazy val snowpackTestServer      = settingKey[SnowpackTestServer]("process handle of the test server")
+lazy val startSnowpackTestServer = taskKey[Unit]("start snowpack test server")
+lazy val stopSnowpackTestServer  = taskKey[Unit]("stop snowpack test server")
