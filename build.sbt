@@ -36,7 +36,7 @@ lazy val `scalajs-snowpack-example` = project
   .aggregate(example)
 
 lazy val `example` = project
-  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalaJSPlugin, ScalaJsSeleniumSnowpackPlugin)
   .settings(
     libraryDependencies ++= Seq(
       scalatest.value % Test,
@@ -48,12 +48,5 @@ lazy val `example` = project
       snowpackTestServer.value.seleniumConfig
     ),
     scalaJSUseMainModuleInitializer := true,
-    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
-    snowpackTestServer := new SnowpackTestServer(baseDirectory.value),
-    startSnowpackTestServer := snowpackTestServer.value.start(),
-    stopSnowpackTestServer := snowpackTestServer.value.stop()
+    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) }
   )
-
-lazy val snowpackTestServer      = settingKey[SnowpackTestServer]("process handle of the test server")
-lazy val startSnowpackTestServer = taskKey[Unit]("start snowpack test server")
-lazy val stopSnowpackTestServer  = taskKey[Unit]("stop snowpack test server")
