@@ -4,7 +4,7 @@ addSbtPlugin("org.scala-js"     % "sbt-scalajs"  % "1.2.0")
 addSbtPlugin("com.timushev.sbt" % "sbt-rewarn"   % "0.1.1")
 
 resolvers += "jitpack" at "https://jitpack.io"
-libraryDependencies += "com.github.mushtaq.scalajs-selenium-snowpack" % "scalajs-selenium-snowpack" % "ee11bd5"
+libraryDependencies += "com.github.mushtaq.scalajs-selenium-snowpack" % "scalajs-selenium-snowpack" % "cf9b97f"
 
 scalacOptions ++= Seq(
   "-encoding",
