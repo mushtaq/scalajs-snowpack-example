@@ -36,7 +36,7 @@ lazy val `scalajs-snowpack-example` = project
   .aggregate(example)
 
 lazy val `example` = project
-  .enablePlugins(ScalaJSPlugin, ScalaJsSeleniumSnowpackPlugin)
+  .enablePlugins(ScalaJSPlugin, SnowpackTestPlugin)
   .settings(
     libraryDependencies ++= Seq(
       scalatest.value % Test,
@@ -45,7 +45,9 @@ lazy val `example` = project
     ),
     jsEnv := new SeleniumJSEnv(
       new ChromeOptions().setHeadless(true),
-      snowpackTestServer.value.seleniumConfig
+      SeleniumJSEnv
+        .Config()
+        .withMaterializeInServer(snowpackTestServer.value.contentDir, snowpackTestServer.value.webRoot)
     ),
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) }
