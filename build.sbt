@@ -50,5 +50,6 @@ lazy val `example` = project
         .withMaterializeInServer(snowpackTestServer.value.contentDir, snowpackTestServer.value.webRoot)
     ),
     scalaJSUseMainModuleInitializer := true,
-    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) }
+    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule).withSourceMap(false) },
+    extraArgs := List("--reload")
   )

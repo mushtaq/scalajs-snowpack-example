@@ -10,9 +10,14 @@ class JsTest extends AsyncFreeSpec with Matchers {
 
   override implicit def executionContext: ExecutionContext = ExecutionContext.global
 
-  "demo" in async {
-    println("running test *********************")
-    await(Main.printEachAndCollect(5)) shouldBe (0 to 4)
+  "rxjs" in async {
+    println("starting test *********************")
+    await(Utils.printEachAndCollect(5)) shouldBe (0 to 4)
+  }
+
+  "camelcase" in async {
+    println("starting test *********************")
+    Utils.camelcase("my name is blah") shouldBe "myNameIsBlah"
   }
 
 }
