@@ -5,7 +5,7 @@ addSbtPlugin("com.timushev.sbt" % "sbt-rewarn"   % "0.1.1")
 
 resolvers += "jitpack" at "https://jitpack.io"
 libraryDependencies += "com.github.mushtaq.scala-js-env-selenium" %% "scalajs-env-selenium" % "5374c6b"
-libraryDependencies += "com.github.mushtaq.sbt-snowpack"           % "sbt-snowpack"         % "d503c3c"
+libraryDependencies += "com.github.mushtaq.sbt-snowpack"           % "sbt-snowpack"         % "530230a"
 
 scalacOptions ++= Seq(
   "-encoding",
